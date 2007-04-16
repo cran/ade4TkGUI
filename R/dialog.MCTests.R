@@ -1,7 +1,7 @@
 ################################
 # GUI for randtest functions
 ################################
-"dialog.MCTests" <- function(show)
+"dialog.MCTests" <- function(show, history)
 {
 	op=options()
 	options(warn=-1)
@@ -87,7 +87,7 @@
 	#
 	# Make the command line
 	#
-		substitute(randtest(object, nperm, fixed))
+		substitute(randtest(xtest = object, nperm, fixed))
 	}
 		
 ################################
@@ -118,9 +118,11 @@
 	#
 		cmd <- build()
 		if (show) {
-			cat("### Command executed via Tk :\n")
-			cat(eval(randtestname)," <- ", deparse(build()),sep="")
-			cat("\n")
+			#
+			# Echoe the command line to the console
+			#
+			pr1 <- substr(options("prompt")$prompt, 1,2)
+			cat("plot(", eval(randtestname), " <- ", deparse(cmd, width = 256), ")\n", pr1, sep="")
 		}
 	#
 	# Execute the command
@@ -130,6 +132,10 @@
 		assign(eval(randtestname), myObject, pos=1)
 		plot(myObject)
 		rm(ade4TkGUIFlag, envir=.GlobalEnv)
+		if (history) {
+			commande = paste("plot(", eval(randtestname), " <- ", deparse(cmd, width = 500), ")", sep = "")
+			rewriteHistory(commande)
+		}
 	}
 #
 # Reset and Submit buttons

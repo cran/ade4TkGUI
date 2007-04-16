@@ -1,7 +1,7 @@
 ################################
 # GUI for dpcoa function
 ################################
-"dialog.dpcoa" <- function(show)
+"dialog.dpcoa" <- function(show, history)
 {
 	op=options()
 	options(warn=-1)
@@ -122,9 +122,9 @@
 	# Make the command line
 	#
 		if (fulll) {
-			substitute(dpcoa(df1, dist1, scannf=scannf, nf=nf, full=TRUE, tol = tol))
+			substitute(dpcoa(df = df1, dis = dist1, scannf = scannf, nf = nf, full = TRUE, tol = tol))
 		} else {
-			substitute(dpcoa(df1, dist1, scannf=scannf, nf=nf, full=FALSE, tol = tol))
+			substitute(dpcoa(df = df1, dis = dist1, scannf = scannf, nf = nf, full = FALSE, tol = tol))
 		}
 	}
 		
@@ -161,9 +161,11 @@
 		cmd <- build()
 		if (cmd == 0) return(0)
 		if (show) {
-			cat("### Command executed via Tk :\n")
-			cat(eval(dudiname)," <- ", deparse(build()),sep="")
-			cat("\n")
+			#
+			# Echoe the command line to the console
+			#
+			pr1 <- substr(options("prompt")$prompt, 1,2)
+			cat(eval(dudiname), " <- ", deparse(cmd, width = 256), "\n", pr1, sep="")
 		}
 	#
 	# Execute the command
@@ -171,8 +173,12 @@
 		ade4TkGUIFlag <<- 1
 		mydudi <- eval.parent(cmd)
 		assign(eval(dudiname), mydudi, pos=1)
-		dialog.dudi.display(eval(dudiname))
+		dialog.dudi.display(show, history, eval(dudiname))
 		rm(ade4TkGUIFlag, envir=.GlobalEnv)
+		if (history) {
+			commande = paste(eval(dudiname), " <- ", deparse(cmd, width = 500), sep = "")
+			rewriteHistory(commande)
+		}
 	}
 #
 # Reset and Submit buttons

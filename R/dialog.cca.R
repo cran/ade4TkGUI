@@ -1,7 +1,7 @@
 ################################
 # GUI for cca function
 ################################
-"dialog.cca" <- function(show)
+"dialog.cca" <- function(show, history)
 {
 	op=options()
 	options(warn=-1)
@@ -96,7 +96,7 @@
 	#
 	# Make the command line
 	#
-		substitute(cca(df1, df2, scannf, nf))
+		substitute(cca(sitspe = df1, sitenv = df2, scannf = scannf, nf = nf))
 	}
 		
 ################################
@@ -130,9 +130,11 @@
 		cmd <- build()
 		if (cmd == 0) return(0)
 		if (show) {
-			cat("### Command executed via Tk :\n")
-			cat(eval(dudiout)," <- ", deparse(build()),sep="")
-			cat("\n")
+			#
+			# Echoe the command line to the console
+			#
+			pr1 <- substr(options("prompt")$prompt, 1,2)
+			cat(eval(dudiout), " <- ", deparse(cmd, width = 256), "\n", pr1, sep="")
 		}
 	#
 	# Execute the command
@@ -140,8 +142,12 @@
 		ade4TkGUIFlag <<- 1
 		myObject <- eval.parent(cmd)
 		assign(eval(dudiout), myObject, pos=1)
-		dialog.dudi.display(eval(dudiout))
+		dialog.dudi.display(show, history, eval(dudiout))
 		rm(ade4TkGUIFlag, envir=.GlobalEnv)
+		if (history) {
+			commande = paste(eval(dudiout), " <- ", deparse(cmd, width = 500), sep = "")
+			rewriteHistory(commande)
+		}
 	}
 #
 # Reset and Submit buttons

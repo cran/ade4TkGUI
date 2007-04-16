@@ -569,6 +569,14 @@
 					sobj <- try(eval(parse(text=sobjn)), silent=TRUE)
 					if (is.vector(sobj) && identical(class(sobj), "numeric")) {
 						if (length(sobj) == nbr) tkinsert(tlb, "end", sobjn)
+					} else if (is.data.frame(sobj)) {
+						if (nrow(sobj) == nbr) {
+							tkinsert(tlb, "end", sobjn)
+#							for (i in 1:ncol(sobj)) {
+#								sobjni <- paste(sobjn,"[,",i,"]",sep="")
+#								tkinsert(tlb, "end", sobjni)
+#							}
+						}
 					}
 				}
 				sapply(names(xobj), fn1)
@@ -836,7 +844,7 @@
 ################################
 # Function to choose a data set in the ade4 package
 ################################
-"choosepackage" <- function()
+"choosepackage" <- function(show, history)
 {
 	tf <- tktoplevel()
 	tkwm.title(tf,"Choose ade4 data set")
@@ -880,68 +888,21 @@
 	
 	choix <- tclvalue(tkget(tlb, numc))
 	data(list=choix)
-	
-	tkdestroy(tf)
-}
 
-################################
-# Function to choose a text file
-################################
-"readtable2" <- function()
-{
-	tf <- tktoplevel()
-	tkwm.title(tf,"Choose a tab-delimited text file")
-	
-	done <- tclVar(0)
-	typesvar <- tclVar()
-	tabnamevar <- tclVar("untitled")
-	fictrt <- tclVar()
-
-	"choosefic" <- function()
-	{
-		if (tclvalue(tabnamevar) != "") {
-			tabname  <- parse(text=tclvalue(tabnamevar))[[1]]
-		} else tabname <- "untitled"
-		tclvalue(typesvar)="{{Text files} {.txt}}"
-		fictrt <- tkgetOpenFile(filetypes=tclvalue(typesvar))
-		fpath <- tclvalue(fictrt)
-		
-		if (tclvalue(fictrt) != "") {
-			#cat(paste(tabname," <- read.table(file='", fpath, "')\n", sep=""))
-			eval(parse(text=paste(tabname," <<- read.table(file='", fpath, "')", sep="")))
-			tkdestroy(tf)
-			displaytable(tabname)
-		}
+	if (show) {
+		pr1 <- substr(options("prompt")$prompt, 1,2)
+		cat("data(", choix, ")\n", pr1, sep="")
 	}
+
+	if (history) rewriteHistory(paste("data(", choix, ")", sep=""))
 	
-	frame1 <- tkframe(tf, relief="groove", borderwidth=2)
-	labh <- tklabel(frame1, bitmap="questhead")
-	tkbind(labh, "<Button-1>", function() print(help("read.table")))
-	tkgrid(tklabel(frame1,text="Read tab-delimited text file", font="Times 18"), labh, columnspan=2)
-	tkpack(frame1, fill = "x")
-
-	frame2 <- tkframe(tf, relief="groove", borderwidth=2)	
-	tab.entry <- tkentry(frame2, textvariable=tabnamevar)
-	tkgrid(tklabel(frame2,text="Dataframe name : "), tab.entry)
-	choosefic.but <- tkbutton(frame2, text="Choose text file", command=function() choosefic())
-	tkgrid(choosefic.but, columnspan=2, ipadx=100)
-	tkpack(frame2, fill = "x")
-
-	cancel.but <- tkbutton(tf, text="Dismiss", command=function() tkdestroy(tf))
-	tkpack(cancel.but, expand=1, fill="x")
-
-	tkbind(tf, "<Destroy>", function() tclvalue(done) <- 2)
-	tkbind(tf, "<KeyPress-Return>", function() tclvalue(done)<-1)
-	tkbind(tf, "<KeyPress-Escape>", function() tkdestroy(tf))
-	tkwait.variable(done)
-	if(tclvalue(done) == "2") return(0)
 	tkdestroy(tf)
 }
 
 ################################
 # Function to choose a text file
 ################################
-"readtable" <- function(show)
+"readtable" <- function(show, history)
 {
 	tf <- tktoplevel()
 	tkwm.title(tf,"Choose a text file")
@@ -966,7 +927,7 @@
 		tkinsert(file.entry, "end", fpath)
 	}
 	
-	"choosefic" <- function()
+	"choosefic" <- function(show, history)
 	{	
 		if (tclvalue(tabnamevar) != "") {
 			tabname  <- parse(text=tclvalue(tabnamevar))[[1]]
@@ -1004,10 +965,14 @@
 			rdcom <- paste(tabname," <<- read.table(file='", filename, "', header=",varn,
 				", sep='",sepch,"', dec='",decsepch,"', colClasses='",colClass,"')", sep="")
 		}
+	
 		if (show) {
-			cat("### Command executed via Tk :\n")
-			print(rdcom)
+			pr1 <- substr(options("prompt")$prompt, 1,2)
+			cat(rdcom, "\n", pr1, sep="")
 		}
+
+		if (history) rewriteHistory(rdcom)
+
 		eval(parse(text=rdcom))
 		tkdestroy(tf)
 		#displaytable(tabname)
@@ -1022,10 +987,10 @@
 
 	frame2 <- tkframe(tf, relief="groove", borderwidth=2)	
 	tab.entry <- tkentry(frame2, textvariable=tabnamevar)
-	tkgrid(tklabel(frame2,text="Dataframe to receive the data : "), tab.entry)
 	file.entry <- tkentry(frame2, textvariable=filenamevar)
 	choosefile.but <- tkbutton(frame2, text="Set", command=function() choosefile())
 	tkgrid(tklabel(frame2,text="Text file to read : "), file.entry, choosefile.but)
+	tkgrid(tklabel(frame2,text="Dataframe to receive the data : "), tab.entry)
 	varnames.cbut <- tkcheckbutton(frame2,text="Variables names on the first row of data file", variable=varnames)
 	tkgrid(varnames.cbut, columnspan=2, sticky="w")
 	
@@ -1053,12 +1018,12 @@
 
 	tkpack(frame2, fill = "x")
 
-	ok.but <- tkbutton(tf, text="Submit", command=function() choosefic())
+	ok.but <- tkbutton(tf, text="Submit", command=function() choosefic(show, history))
 	cancel.but <- tkbutton(tf, text="Dismiss", command=function() tkdestroy(tf))
 	tkpack(cancel.but, ok.but, side="left", fill="x", expand=1)
 
 	tkbind(tf, "<Destroy>", function() tclvalue(done) <- 2)
-	tkbind(tf, "<KeyPress-Return>", function() choosefic())
+	tkbind(tf, "<KeyPress-Return>", function() choosefic(show, history))
 	tkbind(tf, "<KeyPress-Escape>", function() tkdestroy(tf))
 	tkwait.variable(done)
 	if(tclvalue(done) == "2") return(0)
@@ -1099,14 +1064,22 @@
 ################################
 # dialog box to display a dudi
 ################################
-"dudisp" <- function()
+"dudisp" <- function(show, history)
 {
 	tf <- tktoplevel()
 	tkwm.title(tf,"Dudi display")
-	
-	"calldisp" <- function()
+
+	"calldisp" <- function(show, history)
 	{
-		dialog.dudi.display(tclvalue(dudivar))
+		dialog.dudi.display(show, history, tclvalue(dudivar))
+
+		if (show) {
+			pr1 <- substr(options("prompt")$prompt, 1,2)
+			cat(paste("dialog.dudi.display(", show, ",", history, ",eval(expression(", dQuote(tclvalue(dudivar)), ")))", sep=""), "\n", pr1, sep="")
+		}
+
+		if (history) rewriteHistory(paste("dialog.dudi.display(", show, ",", history, ",eval(expression(", dQuote(tclvalue(dudivar)), ")))", sep=""))
+
 		tkdestroy(tf)
 	}
 	
@@ -1126,12 +1099,12 @@
 	tkpack(frame2, fill = "x")
 
 	cancel.but <- tkbutton(tf, text="Dismiss", command=function() tkdestroy(tf))
-	dispdudi.but <- tkbutton(tf, text="Submit", command=function() calldisp())
+	dispdudi.but <- tkbutton(tf, text="Submit", command=function() calldisp(show, history))
 	tkpack(cancel.but, dispdudi.but, expand=1, fill="x", side="left")
 
 	tkbind(tf, "<Destroy>", function() tclvalue(done) <- 2)
 	tkbind(tf, "<KeyPress-Escape>", function() tkdestroy(tf))
-	tkbind(tf, "<KeyPress-Return>", function() calldisp())
+	tkbind(tf, "<KeyPress-Return>", function() calldisp(show, history))
 
 	tkwait.variable(done)
 	if(tclvalue(done) == "2") return(0)
@@ -1348,9 +1321,9 @@
 }
 
 ################################
-# dialog box to launch the explore.s function
+# dialog box to launch the explore function
 ################################
-"exploregraph" <- function()
+"exploregraph" <- function(show, history)
 {
 	tf <- tktoplevel()
 	tkwm.title(tf,"Graph exploration")
@@ -1358,9 +1331,13 @@
 	"callexp" <- function()
 	{
 		appel <- tclvalue(callvar)[[1]]
-		
-		plotcmd <- parse(text=cmdlist[as.numeric(appel)+1])
+		plotcmd <- parse(text=cmdlist[as.numeric(appel)+1])		
 		explorecmd <- parse(text=paste("explore(", plotcmd, ")", sep=""))		
+		if (show) {
+			pr1 <- substr(options("prompt")$prompt, 1,2)
+			cat(paste("explore(", plotcmd, ")", sep=""), "\n", pr1, sep="")
+		}
+		if (history) rewriteHistory(paste("explore(", plotcmd, ")", sep=""))
 		eval.parent(explorecmd)
 		tkdestroy(tf)
 	}
@@ -2095,4 +2072,20 @@
 	choix <- tclvalue(tkget(tlb, numc))
 	eval(parse(text=paste(choix, " <<- edit(", choix, ")", sep="")))
 	tkdestroy(tf)
+}
+
+################################
+# Function to modify the history (thanks to Thomas Lumley :)
+# http://finzi.psych.upenn.edu/R/Rhelp02a/archive/41067.html
+# [R] can one evaluate an expression in a comment? (or insert resultsinto history?) from Thomas Lumley on 2004-11-08
+################################
+"rewriteHistory" <- function(command)
+{
+	file1 <- tempfile("Rrawhist") 
+	on.exit(unlink(file1)) 
+	savehistory(file1) 
+	conn<-file(file1,open="a") 
+	writeLines(command, con=conn) 
+	close(conn) 
+	loadhistory(file1) 
 }

@@ -9,11 +9,13 @@ A Tcl/Tk GUI for some basic functions in the \code{ade4} package.
 }
 
 \usage{
-ade4TkGUI(show = FALSE)
+ade4TkGUI(show = FALSE, history = FALSE)
 }
 
 \arguments{
-  \item{show}{a logical value. If \code{TRUE}, R commands executed by the GUI are echoed to the console}
+  \item{show}{a logical value. If \code{TRUE}, R commands executed in the GUI are echoed to the console.}
+  \item{history}{a logical value. If \code{TRUE}, R commands executed in the GUI are stored in the R
+  session history.}
 }
 
 \details{
@@ -114,6 +116,22 @@ a disk file in several formats (postscript, pdf, etc).
 The \code{1table}, \code{1table+groups}, \code{2tables}, and \code{Graphics}
 menus give access to several other analysis methods and graphics.
 
+}
+
+\section{History and command line echoing}{
+
+If the \code{show} argument is set to TRUE, then all the commands executed in the GUI are echoed
+to the console. This is handy for complex commands, as it allows to check the exact syntax of the
+command that was executed.
+
+If the \code{history} argument is set to TRUE, then the commands executed in the GUI (the same as
+the commands which are echoed to the console) are stored in the R session history buffer. For each
+command, the history buffer is written to a temporary disk file with \code{savehistory()}, the
+command is appended to this file, and the file is reread in memory with \code{loadhistory()}.
+
+The value (T/F) of both arguments is recalled in the title of the window (ade4TkGUI), so that
+different instances of the GUI launched simultaneously with different values for these arguments
+can be easily recognized.
 }
 
 \author{

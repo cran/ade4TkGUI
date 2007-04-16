@@ -1,7 +1,7 @@
 ################################
 # GUI for s.value function
 ################################
-"dialog.s.value" <- function(show)
+"dialog.s.value" <- function(show, history)
 {
 	#op=options()
 	#options(warn=-1)
@@ -343,12 +343,21 @@
 	#
 	# Make the command line
 	#
-		substitute(s.value(dfxy=xy, z=val, xax = nx, yax = ny, method = method,
-			zmax = zmax, csize = csize, pch = pch, cpoint = cp, clegend = clegend,
-			neig = neig, cneig = cneig, xlim = c(xl1, xl2), ylim = c(yl1, yl2), grid = gridl, 
-			addaxes = axesl, cgrid = cgr, include.origin = origl, origin = c(orx, ory), 
-			sub = sub, csub = csub, possub = possub, pixmap = pm, 
-			contour = cont, area = area, add.plot = addl))
+		if (is.data.frame(eval(val))) {
+			cmd <- paste("if (sqrt(ncol(", deparse(val), ")) == round(sqrt(ncol(", deparse(val),
+				"))) ) ngr <- sqrt(ncol(", deparse(val), ")) else ngr <- sqrt(ncol(", deparse(val),
+				"))+1;par(mfrow=c(ngr,ngr));for(i in 1:ncol(", deparse(val), ")) s.value(", deparse(xy),
+				",", deparse(val), "[,i], ", deparse(nx), ",", deparse(ny), ", sub=names(", deparse(val),
+				")[i], csub=2, clegend=2, cgrid=2, , method = \"", method, "\");par(mfrow=c(1,1))", sep="")
+			parse(text=cmd)
+		} else {
+			substitute(s.value(dfxy=xy, z=val, xax = nx, yax = ny, method = method,
+				zmax = zmax, csize = csize, pch = pch, cpoint = cp, clegend = clegend,
+				neig = neig, cneig = cneig, xlim = c(xl1, xl2), ylim = c(yl1, yl2), grid = gridl, 
+				addaxes = axesl, cgrid = cgr, include.origin = origl, origin = c(orx, ory), 
+				sub = sub, csub = csub, possub = possub, pixmap = pm, 
+				contour = cont, area = area, add.plot = addl))
+		}
 	}
 
 ################################
@@ -400,18 +409,32 @@
 		#
 		# Build and display the command line so that the user can check it
 		#
-			cmd <- build()
-			if (cmd == 0) return(0)
-			if (show) {
-				cat("### Command executed via Tk :\n")
-				cat(deparse(build()),sep="")
-				cat("\n")
-			}
+		cmd <- build()
+		dcmd <- deparse(cmd, width = 500)
+		tcmd <- paste(cmd, sep="", collapse="; ")
+		
+		#if (cmd == 0) return(0)
+
+		if (show) {
+			#
+			# Echoe the command line to the console
+			#
+			pr1 <- substr(options("prompt")$prompt, 1,2)
+			if (length(grep("expression", dcmd, fixed=T)) == 0)
+				cat(dcmd, "\n", pr1, sep="")
+			else
+				cat(tcmd, "\n", pr1, sep="")
+		}
 		#
 		# Execute the command
 		#
 		eval.parent(cmd)
-		cmdlist <<- c(cmdlist, cmd)
+		if (length(grep("expression", dcmd, fixed=T)) == 0) {
+			cmdlist <<- c(cmdlist, cmd)
+			if (history) rewriteHistory(deparse(cmd, width = 500))
+		} else {
+			if (history) rewriteHistory(tcmd)
+		}
 	}
 #
 # Place the three buttons

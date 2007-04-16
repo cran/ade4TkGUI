@@ -1,7 +1,7 @@
 ################################
 # GUI for s.match function
 ################################
-"dialog.s.match" <- function(show)
+"dialog.s.match" <- function(show, history)
 {
 	#op=options()
 	#options(warn=-1)
@@ -356,18 +356,21 @@
 		#
 		# Build and display the command line so that the user can check it
 		#
-			cmd <- build()
-			if (cmd == 0) return(0)
-			if (show) {
-				cat("### Command executed via Tk :\n")
-				cat(deparse(build()),sep="")
-				cat("\n")
-			}
+		cmd <- build()
+		if (cmd == 0) return(0)
+		if (show) {
+			#
+			# Echoe the command line to the console
+			#
+			pr1 <- substr(options("prompt")$prompt, 1,2)
+			cat(deparse(cmd, width = 500), "\n", pr1, sep="")
+		}
 		#
 		# Execute the command
 		#
 		eval.parent(cmd)
 		cmdlist <<- c(cmdlist, cmd)
+		if (history) rewriteHistory(deparse(cmd, width = 500))
 	}
 #
 # Place the three buttons

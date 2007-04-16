@@ -1,7 +1,7 @@
 ################################
 # GUI for dudi.coa function
 ################################
-"dialog.dudi.coa" <- function(show)
+"dialog.dudi.coa" <- function(show, history)
 {
 	op=options()
 	options(warn=-1)
@@ -96,7 +96,7 @@
 	#
 	# Make the command line
 	#
-		substitute(dudi.coa(df, scannf=scannf, nf=nf))
+		substitute(dudi.coa(df = df, scannf = scannf, nf = nf))
 	}
 		
 ################################
@@ -128,9 +128,11 @@
 		cmd <- build()
 		if (cmd == 0) return(0)
 		if (show) {
-			cat("### Command executed via Tk :\n")
-			cat(eval(dudiname)," <- ", deparse(build()),sep="")
-			cat("\n")
+			#
+			# Echoe the command line to the console
+			#
+			pr1 <- substr(options("prompt")$prompt, 1,2)
+			cat(eval(dudiname), " <- ", deparse(cmd, width = 256), "\n", pr1, sep="")
 		}
 	#
 	# Execute the command
@@ -138,8 +140,12 @@
 		ade4TkGUIFlag <<- 1
 		mydudi <- eval.parent(cmd)
 		assign(eval(dudiname), mydudi, pos=1)
-		dialog.dudi.display(eval(dudiname))
+		dialog.dudi.display(show, history, eval(dudiname))
 		rm(ade4TkGUIFlag, envir=.GlobalEnv)
+		if (history) {
+			commande = paste(eval(dudiname), " <- ", deparse(cmd, width = 500), sep = "")
+			rewriteHistory(commande)
+		}
 	}
 
 #

@@ -41,21 +41,21 @@
 \alias{dialog.s.class}
 \alias{dialog.s.corcircle}
 \alias{dialog.s.label}
+\alias{dialog.s.arrow}
 \alias{dialog.s.match}
 \alias{dialog.s.value}
 \alias{dialog.within}
 \alias{displaytable}
 \alias{dudisp}
-\alias{explore}
 \alias{exploregraph}
 \alias{newGr}
 \alias{resetgraph}
 \alias{outgraph}
 \alias{readtable}
-\alias{readtable2}
 \alias{selectGr}
 \alias{askQuit}
 \alias{editdf}
+\alias{rewriteHistory}
 \title{Internal functions for the ade4TkGUI package.}
 \description{
 Internal functions for the ade4TkGUI package

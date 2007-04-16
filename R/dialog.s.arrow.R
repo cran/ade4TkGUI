@@ -1,7 +1,7 @@
 ################################
-# GUI for s.label function
+# GUI for s.arrow function
 ################################
-"dialog.s.label" <- function(show, history)
+"dialog.s.arrow" <- function(show, history)
 {
 	#op=options()
 	#options(warn=-1)
@@ -9,7 +9,7 @@
 # Main dialog window with title
 #
 	tt <- tktoplevel()
-	tkwm.title(tt,"s.label")
+	tkwm.title(tt,"s.arrow")
 
     frame1 <- tkframe(tt, relief="groove", borderwidth=2)
     frame2 <- tkframe(tt, relief="groove", borderwidth=2)
@@ -42,8 +42,6 @@
 	oryvar <- tclVar(0)
 	subvar <- tclVar()
 	csubvar <- tclVar(1.25)
-	neigvar <- tclVar()
-	cneigvar <- tclVar(2)
 	pmvar <- tclVar()
 	contvar <- tclVar()
 	areavar <- tclVar()
@@ -52,16 +50,16 @@
 #
 	gridvar <- tclVar(1)
 	axesvar <- tclVar(1)
-	origvar <- tclVar(1)
 	posvar <- tclVar(1)
 	addvar <- tclVar(0)
 	drawBoxvar <- tclVar(1)
+	edgevar <- tclVar(1)
 #
 # Title
 #
 	TFrame <- tkframe(tt, relief="groove")
 	labh <- tklabel(TFrame, bitmap="questhead")
-	tkgrid(tklabel(TFrame,text="Labels", font="Times 18", foreground="red"), labh)
+	tkgrid(tklabel(TFrame,text="Arrows", font="Times 18", foreground="red"), labh)
 	tkbind(labh, "<Button-1>", function() print(help("s.label")))
 	tkpack(TFrame)
 #
@@ -130,17 +128,17 @@
 #
 # Options frame
 #
+	edge.cbut <- tkcheckbutton(optframe,text="Draw arrow tips", variable=edgevar)
 	axes.cbut <- tkcheckbutton(optframe,text="Draw axes", variable=axesvar)
 	add.cbut <- tkcheckbutton(optframe,text="Add to plot", variable=addvar)
 	tkgrid(tklabel(optframe, text="- Draw options -", foreground="blue"))
+	tkgrid(edge.cbut)
 	tkgrid(axes.cbut)
 	tkgrid(add.cbut)
 	
-	orig.cbut <- tkcheckbutton(origframe,text="Include origin", variable=origvar)
 	orx.entry <- tkentry(origframe, textvariable=orxvar, width=10)
 	ory.entry <- tkentry(origframe, textvariable=oryvar, width=10)
 	tkgrid(tklabel(origframe, text="- Origin -", foreground="blue"), columnspan=2)
-	tkgrid(orig.cbut)
 	tkgrid(tklabel(origframe,text="X Origin : "), orx.entry)
 	tkgrid(tklabel(origframe,text="Y Origin : "), ory.entry)
 
@@ -156,20 +154,15 @@
 #
 # Misc frame
 #
-	neig.entry <- tkentry(miscframe, textvariable=neigvar, width=10)
-	cneig.entry <- tkentry(miscframe, textvariable=cneigvar, width=3)
 	pm.entry <- tkentry(miscframe, textvariable=pmvar, width=10)
 	cont.entry <- tkentry(miscframe, textvariable=contvar, width=10)
 	area.entry <- tkentry(miscframe, textvariable=areavar, width=10)
 
-	chooseneig.but <- tkbutton(miscframe, text="Set", command=function() chooseneig(neig.entry))
 	choosepm.but <- tkbutton(miscframe, text="Set", command=function() choosepm(miscframe, dfnr.label, pm.entry))
 	choosecont.but <- tkbutton(miscframe, text="Set", command=function() choosecont(cont.entry))
 	choosearea.but <- tkbutton(miscframe, text="Set", command=function() choosearea(area.entry))
 
     tkgrid(tklabel(miscframe, text="- Misc. options -", foreground="blue"), columnspan=3)
-	tkgrid(tklabel(miscframe,text="Neighbouring relation : "), neig.entry, chooseneig.but)
-	tkgrid(tklabel(miscframe,text="Neighbouring size : "), cneig.entry)
 	tkgrid(tklabel(miscframe,text="Pixmap : "), pm.entry, choosepm.but)
 	tkgrid(tklabel(miscframe,text="Contour : "), cont.entry, choosecont.but)
 	tkgrid(tklabel(miscframe,text="Area : "), area.entry, choosearea.but)
@@ -221,7 +214,7 @@
 		} else pch <- 20
 		if (tclvalue(cpvar) != "") {
 			cp <- parse(text=tclvalue(cpvar))[[1]]
-		} else if (clab == 0) cp <- 1 else cp <- 0
+		} else cp <- 0
 	#
 	# Get x and y lim
 	#
@@ -262,15 +255,6 @@
 			csub <- parse(text=tclvalue(csubvar))[[1]]
 		} else csub <- 1.25
 	#
-	# Get neighbouring relationship
-	#
-		if (tclvalue(neigvar) != "") {
-			neig <- parse(text=tclvalue(neigvar))[[1]]
-		} else neig <- NULL
-		if (tclvalue(cneigvar) != "") {
-			cneig <- parse(text=tclvalue(cneigvar))[[1]]
-		} else cneig <- 2
-	#
 	# Get pixmap
 	#
 		if (tclvalue(pmvar) != "") {
@@ -293,10 +277,10 @@
 	#
 		gridl <- as.logical(tclObj(gridvar))
 		axesl <- as.logical(tclObj(axesvar))
-		origl <- as.logical(tclObj(origvar))
 		posit <- tclvalue(posvar)
 		addl <- as.logical(tclObj(addvar))
 		drawBoxl <- as.logical(tclObj(drawBoxvar))
+		edgel <- as.logical(tclObj(edgevar))
 		if (posit == 1) possub <- "topleft"
 		if (posit == 2) possub <- "topright"
 		if (posit == 3) possub <- "bottomleft"
@@ -304,16 +288,16 @@
 	#
 	# Make the command line
 	#
-		if (identical(lab,NULL)) substitute(s.label(dfxy = xy, xax = nx, yax = ny, 
-			clabel = clab, pch = pch, cpoint = cp, boxes = drawBoxl,
-			neig = neig, cneig = cneig, xlim = c(xl1, xl2), ylim = c(yl1, yl2), grid = gridl, 
-			addaxes = axesl, cgrid = cgr, include.origin = origl, origin = c(orx, ory), 
+		if (identical(lab,NULL)) substitute(s.arrow(dfxy=xy, xax = nx, yax = ny, 
+			clabel = clab, pch = pch, cpoint = cp, boxes = drawBoxl, edge = edgel,
+			xlim = c(xl1, xl2), ylim = c(yl1, yl2), grid = gridl, 
+			addaxes = axesl, cgrid = cgr, origin = c(orx, ory), 
 			sub = sub, csub = csub, possub = possub, pixmap = pm, 
 			contour = cont, area = area, add.plot = addl))
-    	else  substitute(s.label(dfxy = xy, xax = nx, yax = ny, label = lab, 
-			clabel = clab, pch = pch, cpoint = cp,  boxes = drawBoxl,
-			neig = neig, cneig = cneig, xlim = c(xl1, xl2), ylim = c(yl1, yl2), grid = gridl, 
-			addaxes = axesl, cgrid = cgr, include.origin = origl, origin = c(orx, ory), 
+    	else  substitute(s.arrow(dfxy=xy, xax = nx, yax = ny, label = lab, 
+			clabel = clab, pch = pch, cpoint = cp,  boxes = drawBoxl, edge = edgel,
+			xlim = c(xl1, xl2), ylim = c(yl1, yl2), grid = gridl, 
+			addaxes = axesl, cgrid = cgr, origin = c(orx, ory), 
 			sub = sub, csub = csub, possub = possub, pixmap = pm, 
 			contour = cont, area = area, add.plot = addl))
 	}
@@ -339,8 +323,6 @@
 		tclvalue(oryvar) <- "0"
 		tclvalue(subvar) <- ""
 		tclvalue(csubvar) <- "1.25"
-		tclvalue(neigvar) <- ""
-		tclvalue(cneigvar) <- "2"
 		tclvalue(pmvar) <- ""
 		tclvalue(contvar) <- ""
 		tclvalue(areavar) <- ""
@@ -348,12 +330,12 @@
 		tkconfigure(dfnc.label, text="")
 		gridvar <- tclVar(1)
 		axesvar <- tclVar(1)
-		origvar <- tclVar(1)
 		ptlvar <- tclVar(1)
 		ptrvar <- tclVar(0)
 		pblvar <- tclVar(1)
 		pbrvar <- tclVar(0)
 		addvar <- tclVar(0)
+		edgevar <- tclVar(1)
 	}
 	
 ################################
@@ -366,7 +348,6 @@
 		#
 		cmd <- build()
 		if (cmd == 0) return(0)
-		
 		if (show) {
 			#
 			# Echoe the command line to the console

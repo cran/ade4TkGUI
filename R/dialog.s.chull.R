@@ -1,7 +1,7 @@
 ################################
 # GUI for s.chull function
 ################################
-"dialog.s.chull" <- function(show)
+"dialog.s.chull" <- function(show, history)
 {
 	#op=options()
 	#options(warn=-1)
@@ -244,7 +244,7 @@
 	#
 		if (tclvalue(colvar) != "") {
 			col <- parse(text=tclvalue(colvar))[[1]]
-		} else col <- eval(parse(text=paste("rep(1, length(levels(", facstr, ")))", sep="")))
+		} else col <- eval(parse(text=paste("rep(1, length(levels(", facstr, ")))", sep="")),env=.GlobalEnv)
 	#
 	# Get hull levels
 	#
@@ -382,18 +382,21 @@
 		#
 		# Build and display the command line so that the user can check it
 		#
-			cmd <- build()
-			if (cmd == 0) return(0)
-			if (show) {
-				cat("### Command executed via Tk :\n")
-				cat(deparse(build()),sep="")
-				cat("\n")
-			}
+		cmd <- build()
+		if (cmd == 0) return(0)
+		if (show) {
+			#
+			# Echoe the command line to the console
+			#
+			pr1 <- substr(options("prompt")$prompt, 1,2)
+			cat(deparse(cmd, width = 500), "\n", pr1, sep="")
+		}
 		#
 		# Execute the command
 		#
 		eval.parent(cmd)
 		cmdlist <<- c(cmdlist, cmd)
+		if (history) rewriteHistory(deparse(cmd, width = 500))
 	}
 #
 # Place the three buttons
