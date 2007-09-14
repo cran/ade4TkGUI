@@ -7,9 +7,12 @@
 	require(ade4) || stop("ade4 support is absent")
 	require(grDevices) || stop("grDevices support is absent")
 	
-	cmdlist <<- "cmdlist"
-	winlist <<- 1
-	if (exists("ade4TkGUIFlag")) rm(ade4TkGUIFlag, envir=.GlobalEnv)
+#	cmdlist <<- "cmdlist"
+	assign("cmdlist", "cmdlist", envir=.GlobalEnv)
+#	winlist <<- 1
+	assign("winlist", 1, envir=.GlobalEnv)
+	
+	if (exists("ade4TkGUIFlag")) rm("ade4TkGUIFlag", envir=.GlobalEnv)
 #
 # Main dialog window with title
 #
@@ -18,8 +21,8 @@
 #
 # Checkboxes
 #
-	if (show) showvar <- tclVar(1) else showvar <- tclVar(0)
-	if (history) histvar <- tclVar(1) else histvar <- tclVar(0)
+#	if (show) showvar <- tclVar(1) else showvar <- tclVar(0)
+#	if (history) histvar <- tclVar(1) else histvar <- tclVar(0)
 #
 # Menu setup
 #
@@ -117,6 +120,8 @@
 		else titre <- tklabel(frame1,text="ade4TkGUI (T, F)", font="Times 20", foreground="red", background="white")
 		else if (history) titre <- tklabel(frame1,text="ade4TkGUI (F, T)", font="Times 20", foreground="red", background="white")
 		else titre <- tklabel(frame1,text="ade4TkGUI (F, F)", font="Times 20", foreground="red", background="white")
+	
+	helplab <- tklabel(frame1,text="- Right click buttons for help - Double click in lists to select -", font="Times 12", foreground="dark green", background="white")
 
 #	frameCheck <- tkframe(frame1, relief="flat", borderwidth=0, background="white")
 #	if (show) show.cbut <- tklabel(frameCheck,text="T", background="white", font="system 10") else
@@ -128,6 +133,7 @@
 #
 #	tkgrid(frameCheck, Rlabel, titre, labh, TclTklabel, padx=10, sticky = "w")
 	tkgrid(Rlabel, titre, labh, TclTklabel, padx=10, sticky = "w")
+	tkgrid(helplab, columnspan=4)
 	tkpack(frame1, fill="x")
 #
 # read text files and load ade4 data set

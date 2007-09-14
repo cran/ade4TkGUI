@@ -204,8 +204,8 @@
 		}
 	}
 	v <- unlist(lapply(obj, flb))
-	#vnr <- v[seq(from=1,to=length(v),by=2)]
-	#vnc <- v[seq(from=2,to=length(v),by=2)]
+#	vnr <- v[seq(from=1,to=length(v),by=2)]
+#	vnc <- v[seq(from=2,to=length(v),by=2)]
 
 	tkbind(tlb, "<Double-ButtonPress-1>", function() tclvalue(done)<-1)
 	tkbind(tf, "<Destroy>", function() tclvalue(done)<-2)
@@ -231,6 +231,102 @@
 #
 	tkdelete(cont.entry, 0, "end")
 	tkinsert(cont.entry, "end", choix)
+#
+# Put the row and column numbers of the dataframe in the corresponding labels
+#
+	#tkconfigure(dfnr.label, text=as.character(vnr[numi]))
+	#tkconfigure(dfnc.label, text=as.character(vnc[numi]))
+
+	tkdestroy(tf)
+}
+
+################################
+# Function to choose the pixmap : builds a listbox containing the pixmaps
+# that are in the global environment and allows the user to choose one
+################################
+"choosepm" <- function(pm.entry)
+{
+	tf <- tktoplevel()
+	tkwm.title(tf,"Choose pixmap")
+	done <- tclVar(0)
+	
+	vnr <- NULL
+	vnc <- NULL
+	numi <- 1
+
+	tlb <- tklistbox(tf)
+	scr <- tkscrollbar(tf, repeatinterval=5, command=function(...)tkyview(tlb,...))
+	tkconfigure(tlb, yscrollcommand=function(...)tkset(scr,...))
+	frame1 <- tkframe(tf, relief="groove", borderwidth=2)
+	cancel.but <- tkbutton(frame1, text="Dismiss", command=function()tkdestroy(tf))
+	submit.but <- tkbutton(frame1, text="Choose", default="active", command=function()tclvalue(done)<-1)
+	tkpack(cancel.but, submit.but, side="left")
+	tkpack(frame1, side="bottom")
+	tkpack(tlb, side="left", fill="both", expand=TRUE)
+	tkpack(scr, side="right", fill="y")
+
+	rm("last.warning", envir=globalenv())
+	obj <- ls(globalenv())
+#
+# For all objects in the global environment, check to see if it is a dataframe
+# or a list. If it is a data frame, insert it in the listbox, and if it is a list,
+# check its elements.
+#
+	flb <- function(x1) {
+		xobj <- get(x1, envir=globalenv())
+		if (class(xobj) == "pixmapIndexed") {
+			tkinsert(tlb, "end", x1)
+			cbind(nrow(xobj),ncol(xobj))
+		} else if (is.list(xobj)) {
+			if (length(names(xobj)) != 0) {
+				fn1 <- function(x) {
+					sobjn <- paste(x1,"$",x,sep="")
+					sobj <- try(eval(parse(text=sobjn)), silent=TRUE)
+					if (class(xobj) == "pixmapIndexed") {
+						tkinsert(tlb, "end", sobjn)
+					}
+				}
+				sapply(names(xobj), fn1)
+				fn2 <- function(x) {
+					sobjn <- paste(x1,"$",x,sep="")
+					sobj <- try(eval(parse(text=sobjn)), silent=TRUE)
+					if (class(xobj) == "pixmapIndexed") {
+						cbind(nrow(sobj), ncol(sobj))
+					}
+				}
+				res <- sapply(names(xobj), fn2)
+				return(res)		
+			}
+		}
+	}
+	v <- unlist(lapply(obj, flb))
+	#vnr <- v[seq(from=1,to=length(v),by=2)]
+	#vnc <- v[seq(from=2,to=length(v),by=2)]
+
+	tkbind(tlb, "<Double-ButtonPress-1>", function() tclvalue(done)<-1)
+	tkbind(tf, "<Destroy>", function() tclvalue(done)<-2)
+	tkbind(tf, "<KeyPress-Return>", function() tclvalue(done)<-1)
+	tkbind(tf, "<KeyPress-Escape>", function() tkdestroy(tf))
+	
+	tkwait.variable(done)
+	if(tclvalue(done)=="2") return(0)
+#
+# Get the number of the element choosed by the user
+#
+	numc <- tclvalue(tkcurselection(tlb))
+	numi <- as.integer(numc)+1
+	
+	if(numc == "") {
+		tkdestroy(tf)
+		return(0)
+	}
+	
+	choix <- tclvalue(tkget(tlb, numc))
+#
+# Put the name of the object in the dataframe text entry
+#
+	tkdelete(pm.entry, 0, "end")
+	tkinsert(pm.entry, "end", choix)
 #
 # Put the row and column numbers of the dataframe in the corresponding labels
 #
@@ -835,7 +931,8 @@
 	tkinsert(cw.entry, "end", choix)
 	
 	tclvalue(ucwvar)<-"0"
-	cwl.cbut <- tkcheckbutton(tt,text="Uniform row weights", variable=ucwvar)
+	tkcheckbutton(tt,text="Uniform row weights", variable=ucwvar)
+#	cwl.cbut <- tkcheckbutton(tt,text="Uniform row weights", variable=ucwvar)
 
 
 	tkdestroy(tf)
@@ -897,6 +994,8 @@
 	if (history) rewriteHistory(paste("data(", choix, ")", sep=""))
 	
 	tkdestroy(tf)
+	q <- tkmessageBox(icon="info", title="Data set loaded", type="ok", 
+		message=paste("The \"",choix,"\" data set has been successfully loaded.", sep=""))
 }
 
 ################################
@@ -1328,10 +1427,12 @@
 	tf <- tktoplevel()
 	tkwm.title(tf,"Graph exploration")
 	
+	loclist <- get("cmdlist", envir=.GlobalEnv)
+	
 	"callexp" <- function()
 	{
 		appel <- tclvalue(callvar)[[1]]
-		plotcmd <- parse(text=cmdlist[as.numeric(appel)+1])		
+		plotcmd <- parse(text=loclist[as.numeric(appel)+1])		
 		explorecmd <- parse(text=paste("explore(", plotcmd, ")", sep=""))		
 		if (show) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
@@ -1394,18 +1495,18 @@
 #
 # cmdlist contains the list of graphs that were drawn by the user.
 #
-	
-	if (length(cmdlist) > 1) {
-		for (i in 2:length(cmdlist)) {
-			if (is.call(cmdlist[[i]])) {
-				dcall <- cmdlist[[i]]
+	cmdlist1 <- get("cmdlist", envir=.GlobalEnv)
+	if (length(cmdlist1) > 1) {
+		for (i in 2:length(cmdlist1)) {
+			if (is.call(cmdlist1[[i]])) {
+				dcall <- cmdlist1[[i]]
 				narg <- length(names(dcall))
 				paramlst <- encodeString(dcall)[2:narg]
 				arglst <- names(dcall)[2:narg]
 				call1 <- paste(encodeString(dcall)[1],"(", paste(arglst, paramlst, sep=" = ",collapse=", "), ")", sep="")
 				tkinsert(tlb, "end", call1)
 			} else {
-				tkinsert(tlb, "end", as.character(cmdlist[[i]]))
+				tkinsert(tlb, "end", as.character(cmdlist1[[i]]))
 			}
 		}
 	}	
@@ -1905,7 +2006,8 @@
 	} else if (options("device")$device=="quartz") {
 		quartz()
 	}
-	winlist <<- winlist+1
+#	winlist <<- winlist+1
+	assign("winlist", get("winlist", envir=.GlobalEnv)+1, envir=.GlobalEnv)
 }
 
 ################################
@@ -1913,8 +2015,8 @@
 ################################
 "resetgraph" <- function()
 {
-	if (exists("cmdlist")) rm(cmdlist, envir=.GlobalEnv)
-	cmdlist <<- "cmdlist"
+	if (exists("cmdlist")) rm("cmdlist", envir=.GlobalEnv)
+	assign("cmdlist", "cmdlist", envir=.GlobalEnv)
 }
 
 ################################

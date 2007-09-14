@@ -119,7 +119,7 @@
 	area.entry <- tkentry(miscframe, textvariable=areavar, width=10)
 
 	chooseneig.but <- tkbutton(miscframe, text="Set", command=function() chooseneig(neig.entry))
-	choosepm.but <- tkbutton(miscframe, text="Set", command=function() choosepm(miscframe, dfnr.label, pm.entry))
+	choosepm.but <- tkbutton(miscframe, text="Set", command=function() choosepm(pm.entry))
 	choosecont.but <- tkbutton(miscframe, text="Set", command=function() choosecont(cont.entry))
 	choosearea.but <- tkbutton(miscframe, text="Set", command=function() choosearea(area.entry))
 
@@ -420,7 +420,7 @@
 			# Echoe the command line to the console
 			#
 			pr1 <- substr(options("prompt")$prompt, 1,2)
-			if (length(grep("expression", dcmd, fixed=T)) == 0)
+			if (length(grep("expression", dcmd, fixed=TRUE)) == 0)
 				cat(dcmd, "\n", pr1, sep="")
 			else
 				cat(tcmd, "\n", pr1, sep="")
@@ -429,8 +429,9 @@
 		# Execute the command
 		#
 		eval.parent(cmd)
-		if (length(grep("expression", dcmd, fixed=T)) == 0) {
-			cmdlist <<- c(cmdlist, cmd)
+		if (length(grep("expression", dcmd, fixed=TRUE)) == 0) {
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 			if (history) rewriteHistory(deparse(cmd, width = 500))
 		} else {
 			if (history) rewriteHistory(tcmd)

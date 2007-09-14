@@ -20,8 +20,6 @@
 #
 # Local variables
 #
-	ng <- 1
-	ngv <- tclVar(1)
 	maxngr <- maxngr1 <- maxgr
 
 	ordvar <- tclVar(2)
@@ -29,8 +27,6 @@
 	clustvar <- tclVar(3)
 	dfvar <- tclVar()
 	dudivar <- tclVar()
-	rwvar <- tclVar()
-	cwvar <- tclVar()
 
 	naxvar <- tclVar(2)
 	xaxvar <- tclVar(1)
@@ -38,8 +34,6 @@
 
 	nlevvar <- tclVar(1)
 	hlevvar <- tclVar(0)
-	probavar <- tclVar()
-	bwgvar <- tclVar()
 	colorvar <- tclVar(1)
 	mgrvar <- tclVar(1)
 
@@ -61,6 +55,9 @@
 	r1 <- 0
 	h1 <- 0
 	betrat <- 0
+	
+	ordiClust.dudi <- NULL
+	ordiClust.factor <- NULL
 #
 # tkrplot plot function
 #
@@ -77,7 +74,7 @@
 		#print(plotcurve)
 		
 		if (plotclass) {
-			if (exists("ordiClust.factor")) {
+			if (!is.null(ordiClust.factor)) {
 				xaxs <- tclvalue(xaxvar)
 				yaxs <- tclvalue(yaxvar)
 				nlevloc <- tclvalue(nlevvar)
@@ -99,9 +96,9 @@
 					}
 			}
 		} else if (ploteig) {
-			if (exists("ordiClust.dudi")) barplot(ordiClust.dudi$eig)
+			if (!is.null(ordiClust.dudi)) barplot(ordiClust.dudi$eig)
 		} else if (plotrow) {
-			if (exists("ordiClust.dudi")) {
+			if (!is.null(ordiClust.dudi)) {
 				xaxs <- tclvalue(xaxvar)
 				yaxs <- tclvalue(yaxvar)
 				if (xaxs != "") {
@@ -111,10 +108,10 @@
 					yax <- as.numeric(yaxs)
 				} else  return()
 				if ((xax >= 1) && (xax <= nax) && (yax >= 1) && (yax <= nax))
-					s.label(ordiClust.dudi$li, xax, yax, boxes=F)
+					s.label(ordiClust.dudi$li, xax, yax, boxes=FALSE)
 			}
 		} else if (plotcol) {
-			if (exists("ordiClust.dudi")) {
+			if (!is.null(ordiClust.dudi)) {
 				xaxs <- tclvalue(xaxvar)
 				yaxs <- tclvalue(yaxvar)
 				if (xaxs != "") {
@@ -124,7 +121,7 @@
 					yax <- as.numeric(yaxs)
 				} else  return()
 				if ((xax >= 1) && (xax <= nax) && (yax >= 1) && (yax <= nax)) 
-					s.label(ordiClust.dudi$co, xax, yax, boxes=F)
+					s.label(ordiClust.dudi$co, xax, yax, boxes=FALSE)
 			}
 		} else if (plotclust) {
 			if (class(h1) == "hclust") {
@@ -135,7 +132,7 @@
 				}
 			}
 		} else if (plotcurve) {
-			if (exists("ordiClust.dudi"))
+			if (!is.null(ordiClust.dudi))
 			if (exists("betrat")) {
 				plot(betrat, main="Between-groups / Total inertia ratio", xlab="Number of groups", ylab="Inertia ratio")
 				lines(betrat)
@@ -167,7 +164,7 @@
 		meth  <- as.numeric(tclvalue(ordvar))
 		df1  <- tclvalue(dfvar)
 		if (df1 == "") return()
-		if (exists("ordiClust.dudi")) maxngr <<- min(maxngr1, nrow(ordiClust.dudi$li))
+		if (!is.null(ordiClust.dudi)) maxngr <<- min(maxngr1, nrow(ordiClust.dudi$li))
 		tab <- eval(parse(text=df1), envir=.GlobalEnv)
 #
 # cPCA
@@ -275,7 +272,7 @@
 		distm  <- as.numeric(tclvalue(distvar))
 		clustm  <- as.numeric(tclvalue(clustvar))
 		df1  <- tclvalue(dfvar)
-		if (df1 == "") if (!exists("ordiClust.dudi")) return()
+		if (df1 == "") if (is.null(ordiClust.dudi)) return()
 		if (distm < 7) h1 <<- hclust(dist(ordiClust.dudi$li, method=distml[distm]), method=clustml[clustm])
 			else h1 <<- hclust(dist.dudi(ordiClust.dudi), method=clustml[clustm])
 		if (nlev > 1 && nlev <= nrow(ordiClust.dudi$li)) {
@@ -308,7 +305,7 @@
 				hlev <<- hlev1
 				tclvalue(hlevvar) <- hlev1
 				if (nlev > 1 && nlev <= nrow(ordiClust.dudi$li)) {
-					bet1 <- between(ordiClust.dudi, as.factor(ordiClust.factor), scannf=F)
+					bet1 <- between(ordiClust.dudi, as.factor(ordiClust.factor), scannf=FALSE)
 					mc1 <- randtest.between(bet1)
 					tkconfigure(bwg.label, text=paste(format(bet1$ratio*100, dig=2),"%",sep=""))
 					tkconfigure(proba.label, text=format(mc1$pvalue, dig=3))
@@ -330,7 +327,7 @@
 				tclvalue(nlevvar) <- nlevels(ordiClust.factor)
 				nlev <<- as.numeric(tclvalue(nlevvar))
 				if (nlev > 1 && nlev <= nrow(ordiClust.dudi$li)) {
-					bet1 <- between(ordiClust.dudi,as.factor(ordiClust.factor),scannf=F)
+					bet1 <- between(ordiClust.dudi,as.factor(ordiClust.factor),scannf=FALSE)
 					mc1 <- randtest.between(bet1)
 					tkconfigure(bwg.label, text=paste(format(bet1$ratio*100, dig=2),"%",sep=""))
 					tkconfigure(proba.label, text=format(mc1$pvalue, dig=3))
@@ -347,7 +344,7 @@
 				return()
 		} else {
 			if (nlev > 1 && nlev <= nrow(ordiClust.dudi$li)) ordiClust.factor <<- as.factor(cutree(h1, k=nlev))
-			bet1 <- between(ordiClust.dudi,as.factor(ordiClust.factor),scannf=F)
+			bet1 <- between(ordiClust.dudi,as.factor(ordiClust.factor),scannf=FALSE)
 			mc1 <- randtest.between(bet1)
 			tkconfigure(bwg.label, text=paste(format(bet1$ratio*100, dig=2),"%",sep=""))
 			tkconfigure(proba.label, text=format(mc1$pvalue, dig=3))
@@ -376,7 +373,7 @@
 			betrat <<- vector("numeric", nchh)
 			for (i in 1:(nchh-1)) {
 				f1loc <- as.factor(hhloc[,i])
-				betrat[nchh-i+1] <<- between(ordiClust.dudi, f1loc, scannf=F)$ratio
+				betrat[nchh-i+1] <<- between(ordiClust.dudi, f1loc, scannf=FALSE)$ratio
 			}
 			plotrow <<- 0
 			plotcol <<- 0
@@ -410,7 +407,7 @@
 	dudi.entry <- tkentry(IOFrame, textvariable=dudivar)
 	choosedudi.but <- tkbutton(IOFrame, text="Set", command=function() {choosedudi(dudi.entry);
 		if (tclvalue(dudivar) != "") {
-			ordiClust.dudi <<- eval(parse(text=tclvalue(dudivar)));
+			ordiClust.dudi <- eval(parse(text=tclvalue(dudivar)));
 			tclvalue(naxvar) <<- as.character(ordiClust.dudi$nf);
 			nax <<- ordiClust.dudi$nf; ploteig <<- 1; tkrreplot(img);
 		}
@@ -519,13 +516,13 @@
 	f <- function(...) {
 		hlev <<- as.numeric(tclvalue(hlevvar))
 		nlev <<- as.numeric(tclvalue(nlevvar))
-		if (exists("ordiClust.dudi"))
+		if (!is.null(ordiClust.dudi))
 		if (nlev >= 1 && nlev <= nrow(ordiClust.dudi$li)) {
 			if (class(h1) == "hclust")
 				ordiClust.factor <<- as.factor(cutree(h1, k=nlev))
 			else return(0)
 			if (nlev >= 2 && nlev <= nrow(ordiClust.dudi$li)) {
-				bet1 <- between(ordiClust.dudi,as.factor(ordiClust.factor),scannf=F)
+				bet1 <- between(ordiClust.dudi,as.factor(ordiClust.factor),scannf=FALSE)
 				mc1 <- randtest.between(bet1)
 				tkconfigure(bwg.label, text=paste(format(bet1$ratio*100, dig=2),"%",sep=""))
 				tkconfigure(proba.label, text=format(mc1$pvalue, dig=3))
@@ -571,7 +568,7 @@
 	if (!is.null(datatab)) {
 		if (is.data.frame(datatab)) tclvalue(dfvar) <- as.character(substitute(datatab))
 		if (is.dudi(datatab)) {
-			ordiClust.dudi <<- datatab
+			ordiClust.dudi <- datatab
 			tclvalue(naxvar) <- as.character(ordiClust.dudi$nf)
 			nax <- ordiClust.dudi$nf
 			ploteig <- 1
@@ -587,10 +584,10 @@
 		if (nlev < maxngr) {
 			nlev <<- nlev + 1
 			tclvalue(nlevvar) <- nlev
-			if (exists("ordiClust.dudi")) if (class(h1) == "hclust") {
+			if (!is.null(ordiClust.dudi)) if (class(h1) == "hclust") {
 				if (nlev >= 2 && nlev <= nrow(ordiClust.dudi$li)) {
 					ordiClust.factor <<- as.factor(cutree(h1, k=nlev))
-					bet1 <- between(ordiClust.dudi,as.factor(ordiClust.factor),scannf=F)
+					bet1 <- between(ordiClust.dudi,as.factor(ordiClust.factor),scannf=FALSE)
 					mc1 <- randtest.between(bet1)
 					tkconfigure(bwg.label, text=paste(format(bet1$ratio*100, dig=2),"%",sep=""))
 					tkconfigure(proba.label, text=format(mc1$pvalue, dig=3))
@@ -616,10 +613,10 @@
 		if (nlev > 1) {
 			nlev <<- nlev - 1
 			tclvalue(nlevvar) <- nlev
-			if (exists("ordiClust.dudi")) if (class(h1) == "hclust") {
+			if (!is.null(ordiClust.dudi)) if (class(h1) == "hclust") {
 				if (nlev >= 2 && nlev <= nrow(ordiClust.dudi$li)) {
 					ordiClust.factor <<- as.factor(cutree(h1, k=nlev))
-					bet1 <- between(ordiClust.dudi,as.factor(ordiClust.factor),scannf=F)
+					bet1 <- between(ordiClust.dudi,as.factor(ordiClust.factor),scannf=FALSE)
 					mc1 <- randtest.between(bet1)
 					tkconfigure(bwg.label, text=paste(format(bet1$ratio*100, dig=2),"%",sep=""))
 					tkconfigure(proba.label, text=format(mc1$pvalue, dig=3))

@@ -67,7 +67,7 @@
 #	
 	TolFrame <- tkframe(tt, relief="groove", borderwidth=2)
 	tkgrid(tklabel(TolFrame,text="- Options -", foreground="blue"), columnspan=2)
-	choosecw.but <- tkbutton(TolFrame, text="Set", command=function() choosecw(frame4, dfnc.label, cw.entry, ucwvar), state="disabled")
+#	choosecw.but <- tkbutton(TolFrame, text="Set", command=function() choosecw(frame4, dfnc.label, cw.entry, ucwvar), state="disabled")
 	full.cbut <- tkcheckbutton(TolFrame,text="Full analysis (keep all axes)", variable=fullvar,
 		command=function() if (as.logical(tclObj(fullvar))) {tkconfigure(tol.entry, state="normal")}
 		else {tkconfigure(tol.entry, state="disabled")} )
@@ -170,11 +170,12 @@
 	#
 	# Execute the command
 	#
-		ade4TkGUIFlag <<- 1
+#		ade4TkGUIFlag <<- 1
+		assign("ade4TkGUIFlag", 1, envir=.GlobalEnv)
 		mydudi <- eval.parent(cmd)
 		assign(eval(dudiname), mydudi, pos=1)
 		dialog.dudi.display(show, history, eval(dudiname))
-		rm(ade4TkGUIFlag, envir=.GlobalEnv)
+		rm("ade4TkGUIFlag", envir=.GlobalEnv)
 		if (history) {
 			commande = paste(eval(dudiname), " <- ", deparse(cmd, width = 500), sep = "")
 			rewriteHistory(commande)

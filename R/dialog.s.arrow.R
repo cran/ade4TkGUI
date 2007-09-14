@@ -158,7 +158,7 @@
 	cont.entry <- tkentry(miscframe, textvariable=contvar, width=10)
 	area.entry <- tkentry(miscframe, textvariable=areavar, width=10)
 
-	choosepm.but <- tkbutton(miscframe, text="Set", command=function() choosepm(miscframe, dfnr.label, pm.entry))
+	choosepm.but <- tkbutton(miscframe, text="Set", command=function() choosepm(pm.entry))
 	choosecont.but <- tkbutton(miscframe, text="Set", command=function() choosecont(cont.entry))
 	choosearea.but <- tkbutton(miscframe, text="Set", command=function() choosearea(area.entry))
 
@@ -359,7 +359,8 @@
 		# Execute the command
 		#
 		eval.parent(cmd)
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (history) rewriteHistory(deparse(cmd, width = 500))
 	}
 #

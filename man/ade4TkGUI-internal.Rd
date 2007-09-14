@@ -3,6 +3,7 @@
 \alias{chooseaxes}
 \alias{choosechull}
 \alias{choosecol}
+\alias{choosepm}
 \alias{choosecont}
 \alias{choosecw}
 \alias{choosedf}

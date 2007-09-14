@@ -83,7 +83,6 @@ automatically updates the graph, allowing easy comparisons.\cr
 The dudi and the factor used to draw the graphs are available in the global environment,
 withe the names \code{ordiClust.dudi} and \code{ordiClust.factor}.
 }
-}
 
 \author{
 Jean Thioulouse \email{jthioulouse@biomserv.univ-lyon1.fr} \cr

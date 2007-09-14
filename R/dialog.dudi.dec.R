@@ -61,7 +61,8 @@
 	RDFrame <- tkframe(tt, relief="groove", borderwidth=2)
 	tkgrid(tklabel(RDFrame,text="- Decentring -", foreground="blue"), columnspan=3)
 	rw.entry <- tkentry(RDFrame, textvariable=rwvar)
-	chooserw.but <- tkbutton(RDFrame, text="Set", command=function() chooserw(frame3, dfnr.label, rw.entry, urwvar))
+#	chooserw.but <- tkbutton(RDFrame, text="Set", command=function() chooserw(frame3, dfnr.label, rw.entry, urwvar))
+	chooserw.but <- tkbutton(RDFrame, text="Set", command=function() chooserw(RDFrame, dfnr.label, rw.entry, urwvar))
 	tkgrid(tklabel(RDFrame,text="Reference distribution : "), rw.entry, chooserw.but)
 	tkgrid(RDFrame)
 #
@@ -144,11 +145,12 @@
 	#
 	# Execute the command
 	#
-		ade4TkGUIFlag <<- 1
+#		ade4TkGUIFlag <<- 1
+		assign("ade4TkGUIFlag", 1, envir=.GlobalEnv)
 		mydudi <- eval.parent(cmd)
 		assign(eval(dudiname), mydudi, pos=1)
 		dialog.dudi.display(show, history, eval(dudiname))
-		rm(ade4TkGUIFlag, envir=.GlobalEnv)
+		rm("ade4TkGUIFlag", envir=.GlobalEnv)
 		if (history) {
 			commande = paste(eval(dudiname), " <- ", deparse(cmd, width = 500), sep = "")
 			rewriteHistory(commande)

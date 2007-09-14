@@ -11,6 +11,22 @@ explore <- function(call.graph, scale.graph=1.3){
   require(tcltk)
   require(tkrplot)
   
+  usrCoords <- NULL
+  usrCoords.small <- NULL
+  usrCoords.ori <- NULL
+  parPlotSize <- NULL
+  parPlotSize.small <- NULL
+  tl.select.tt2 <- tclVar()
+  rbValue.tt2 <- tclVar()
+  wh.include.row.tt2 <- tclVar()
+  rbValue.ttlabval <- tclVar()
+  xinf <- tclVar()
+  xsup <- tclVar()
+  yinf <- tclVar()
+  ysup <- tclVar()
+  xy1.rect <- NULL
+  zz <- NULL
+  
   ## -----------------------------------------------------------------------
   ##    Fonctionnement general
   ## -----------------------------------------------------------------------
@@ -94,10 +110,10 @@ explore <- function(call.graph, scale.graph=1.3){
     wh.x2 <- which.min(abs(dens$x-x2))
     params <- par(mar = c(0, 0, 0, 0),bg="white")
     if(type=="horizontal"){
-      plot(dens$x,dens$y,axes=F,xlab="",ylab="",main="",ty='l',xlim=usrCoords.ori[1:2])
+      plot(dens$x,dens$y,axes=FALSE,xlab="",ylab="",main="",ty='l',xlim=usrCoords.ori[1:2])
       polygon(c(dens$x[wh.x1],dens$x[wh.x1:wh.x2],dens$x[wh.x2]),c(0,dens$y[wh.x1:wh.x2],0),col="red")
     } else {
-      plot(dens$y,dens$x,axes=F,xlab="",ylab="",main="",lwd=2,ty='l',ylim=usrCoords.ori[3:4])
+      plot(dens$y,dens$x,axes=FALSE,xlab="",ylab="",main="",lwd=2,ty='l',ylim=usrCoords.ori[3:4])
       polygon(c(0,dens$y[wh.x1:wh.x2],0),c(dens$x[wh.x1],dens$x[wh.x1:wh.x2],dens$x[wh.x2]),col="red")
     }
     box()
@@ -222,7 +238,7 @@ explore <- function(call.graph, scale.graph=1.3){
   }
   
   refresh.textinfo<-function(){
-    wh.include.row <- which(dftoplot[,1]>usrCoords[1] & dftoplot[,1]<usrCoords[2] & dftoplot[,2]>usrCoords[3] & dftoplot[,2]<usrCoords[4],arr.ind=T)
+    wh.include.row <- which(dftoplot[,1]>usrCoords[1] & dftoplot[,1]<usrCoords[2] & dftoplot[,2]>usrCoords[3] & dftoplot[,2]<usrCoords[4],arr.ind=TRUE)
     tkconfigure(txtdata, state="normal")
     tkconfigure(txtlabrow, state="normal")
     tkdelete(txtlabrow,"0.0","end")
@@ -439,7 +455,7 @@ explore <- function(call.graph, scale.graph=1.3){
           name.sites.df <- row.names(dftoplot)
         }
         else if(tclvalue(rbValue.tt2)=="current"){
-          wh.include.row.tt2 <<- which(dftoplot[,1]>usrCoords[1] & dftoplot[,1]<usrCoords[2] & dftoplot[,2]>usrCoords[3] & dftoplot[,2]<usrCoords[4],arr.ind=T)
+          wh.include.row.tt2 <<- which(dftoplot[,1]>usrCoords[1] & dftoplot[,1]<usrCoords[2] & dftoplot[,2]>usrCoords[3] & dftoplot[,2]<usrCoords[4],arr.ind=TRUE)
           name.sites.df <- row.names(dftoplot)[wh.include.row.tt2]
         }
         if(length(name.sites)>0){    
@@ -800,23 +816,22 @@ explore <- function(call.graph, scale.graph=1.3){
 
   frame2 <- tkframe(top.right.frm, relief="groove", borderwidth=2)
 
-
   ##  label des points
   ## fenetre texte
   oldwidth <- options()$width
   options(width = 10000)
-  conn <- textConnection("zz", "w")
+  conn <- textConnection("zz", "w", local=TRUE)
   sink(conn)
   print(dftoplot)
   sink()
   close(conn)
   options(width = oldwidth)
-  
+
   namesrowchar <- row.names(dftoplot)
   wnamesrowchar <- max(nchar(namesrowchar))
   namescolchar <- substring(zz[1], 2)
   datachar <- substring(zz, 2 + wnamesrowchar)
-  rm(zz, envir = .GlobalEnv)
+#  rm(zz, envir = .GlobalEnv)
   datachar <- datachar[-1]
   wdatachar <- max(nchar(datachar))
   wnamesrowchar <- max(nchar(namesrowchar))
@@ -836,16 +851,9 @@ explore <- function(call.graph, scale.graph=1.3){
   tkpack(txtlabcol, side="top",fill="x",anchor="e")
   tkpack(txtlabrow, side="left")
   tkpack(txtdata,side="left")
-  
   tkpack(frame1, side="top",anchor="w")
   tkpack(frame2b,side="top",anchor="center")
-  
 
-  
-  
-
-
-  
   ## -----------------------------------------------------------------------
   ##    tcltk : interface pour le choix du Mode 
   ## -----------------------------------------------------------------------
@@ -932,7 +940,7 @@ explore <- function(call.graph, scale.graph=1.3){
     list.obj <- ls(pos=sys.frame())
     obj.glob <- c("add.rectzoom.plot1","usrCoords.ori","parPlotSize","usrCoords","parPlotSize.small","usrCoords.small","appel.list","add.labels.plot1","zoomfactor","xy1.rect","labelled.points","wh.include.row.tt2","xinf","yinf","xsup","ysup","rbValue.ttlabval","rbValold","name.sites","name.sites.new","point.found","rbValue.tt2","tl.select.tt2")
     to.remove <- obj.glob[pmatch(list.obj,obj.glob)[!is.na(pmatch(list.obj,obj.glob))]]
-    rm(list=eval(to.remove),pos=sys.frame())
+#    rm(list=eval(to.remove),pos=sys.frame())
     tkdestroy(tt)
   }
 
@@ -950,7 +958,7 @@ explore <- function(call.graph, scale.graph=1.3){
   maxzoom <- 1000
   frame3 <- tkframe(low.frm)
   tkpack(tklabel(frame3,text="Zoom factor "),side="left",anchor="n")
-  scaleview <- tkscale(frame3, command=redo.plot.s.zoomfac, from=100, to=maxzoom, showvalue=F, variable=zoomfactor, resolution=10, orient="horizontal", length=300, tick=100)
+  scaleview <- tkscale(frame3, command=redo.plot.s.zoomfac, from=100, to=maxzoom, showvalue=FALSE, variable=zoomfactor, resolution=10, orient="horizontal", length=300, tick=100)
   tkpack(scaleview, anchor="center")
   tkpack(frame5,side="left",fill="both")
   tkpack(frame3,side="right")

@@ -139,11 +139,12 @@
 	#
 	# Execute the command
 	#
-		ade4TkGUIFlag <<- 1
+#		ade4TkGUIFlag <<- 1
+		assign("ade4TkGUIFlag", 1, envir=.GlobalEnv)
 		myObject <- eval.parent(cmd)
 		assign(eval(dudiout), myObject, pos=1)
 		dialog.dudi.display(show, history, eval(dudiout))
-		rm(ade4TkGUIFlag, envir=.GlobalEnv)
+		rm("ade4TkGUIFlag", envir=.GlobalEnv)
 		if (history) {
 			commande = paste(eval(dudiout), " <- ", deparse(cmd, width = 500), sep = "")
 			rewriteHistory(commande)

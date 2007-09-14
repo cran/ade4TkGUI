@@ -79,7 +79,8 @@
 		s.label(eval(parse(text=paste(dudiname, "$li", sep=""))),
 			parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.label(",parse(text=paste(dudiname, "$li", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -92,7 +93,8 @@
 		s.arrow(eval(parse(text=paste(dudiname, "$l1", sep=""))),
 			parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.arrow(",parse(text=paste(dudiname, "$l1", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -105,7 +107,8 @@
 		s.label(eval(parse(text=paste(dudiname, "$l1", sep=""))),
 			parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.label(",parse(text=paste(dudiname, "$l2", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -118,7 +121,8 @@
 		s.label(eval(parse(text=paste(dudiname, "$l2", sep=""))),
 			parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.label(",parse(text=paste(dudiname, "$l2", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -145,7 +149,8 @@
 				s.label(eval(parse(text=paste(dudiname, "$co", sep=""))),
 					parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 				cmd <- paste("s.label(",parse(text=paste(dudiname, "$co", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-				cmdlist <<- c(cmdlist, cmd)
+				# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 				if (showCom) {
 					pr1 <- substr(options("prompt")$prompt, 1,2)
 					cat(cmd, "\n", pr1, sep="")
@@ -165,7 +170,8 @@
 			s.label(eval(parse(text=paste(dudiname, "$co", sep=""))),
 				parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 			cmd <- paste("s.label(",parse(text=paste(dudiname, "$co", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-			cmdlist <<- c(cmdlist, cmd)
+			# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 			if (showCom) {
 					pr1 <- substr(options("prompt")$prompt, 1,2)
 					cat(cmd, "\n", pr1, sep="")
@@ -179,7 +185,8 @@
 		s.arrow(eval(parse(text=paste(dudiname, "$c1", sep=""))),
 			parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.arrow(",parse(text=paste(dudiname, "$c1", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -245,7 +252,8 @@
 			", xax = ", parse(text=tclvalue(xaxvar))[[1]],
 			", yax = ", parse(text=tclvalue(yaxvar))[[1]],
 			", csize = 2, sub = \"Rao Divcs\", possub = \"topright\", csub = 1.5)", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -305,7 +313,8 @@
 			xax=parse(text=tclvalue(xaxvar))[[1]], yax=parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.class(dfxy=",parse(text=paste(dudiname, "$ls", sep="")), ", fac=", parse(text=dcall[3]),
 			", xax=", parse(text=tclvalue(xaxvar))[[1]], ", yax=", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -318,7 +327,8 @@
 		s.arrow(eval(parse(text=paste(dudiname, "$as", sep=""))),
 			parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.arrow(",parse(text=paste(dudiname, "$as", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -331,7 +341,8 @@
 		s.arrow(eval(parse(text=paste(dudiname, "$fa", sep=""))),
 			parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.arrow(",parse(text=paste(dudiname, "$fa", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -345,7 +356,8 @@
 			xax=parse(text=tclvalue(xaxvar))[[1]], yax=parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.class(dfxy=",parse(text=paste(dudiname, "$li", sep="")), ", fac=", parse(text=dcall[3]),
 			", xax=", parse(text=tclvalue(xaxvar))[[1]], ", yax=", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -382,7 +394,8 @@
 		s.label(eval(parse(text=paste(dudiname, "$gc", sep=""))),
 			parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.label(",parse(text=paste(dudiname, "$gc", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -419,7 +432,8 @@
 		s.arrow(eval(parse(text=paste(dudiname, "$l1", sep=""))),
 			parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.arrow(",parse(text=paste(dudiname, "$l1", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -432,7 +446,8 @@
 		s.arrow(eval(parse(text=paste(dudiname, "$c1", sep=""))),
 			parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.arrow(",parse(text=paste(dudiname, "$c1", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -445,7 +460,8 @@
 		s.label(eval(parse(text=paste(dudiname, "$lX", sep=""))),
 			parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.label(",parse(text=paste(dudiname, "$lX", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -458,7 +474,8 @@
 		s.label(eval(parse(text=paste(dudiname, "$lY", sep=""))),
 			parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.label(",parse(text=paste(dudiname, "$lY", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -613,7 +630,8 @@
 		s.arrow(eval(parse(text=paste(dudiname, "$cor", sep=""))),
 			parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.arrow(",parse(text=paste(dudiname, "$cor", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -638,7 +656,8 @@
 		s.label(eval(parse(text=paste(dudiname, "$co", sep=""))),
 			parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.label(",parse(text=paste(dudiname, "$co", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
@@ -651,7 +670,8 @@
 		s.label(eval(parse(text=paste(dudiname, "$l1", sep=""))),
 			parse(text=tclvalue(xaxvar))[[1]], parse(text=tclvalue(yaxvar))[[1]])
 		cmd <- paste("s.label(",parse(text=paste(dudiname, "$l1", sep="")), ",", parse(text=tclvalue(xaxvar))[[1]], ",", parse(text=tclvalue(yaxvar))[[1]],")", sep="")
-		cmdlist <<- c(cmdlist, cmd)
+		# cmdlist <<- c(cmdlist, cmd)
+		assign("cmdlist", c(get("cmdlist", envir=.GlobalEnv), cmd), envir=.GlobalEnv)
 		if (showCom) {
 			pr1 <- substr(options("prompt")$prompt, 1,2)
 			cat(cmd, "\n", pr1, sep="")
