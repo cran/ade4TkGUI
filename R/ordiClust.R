@@ -83,8 +83,8 @@
 						if (as.logical(tclObj(colorvar))) s.class(ordiClust.dudi$li, fact1, xax=xax, yax=yax, col=rainbow(nlevels(fact1)))
 							else s.class(ordiClust.dudi$li, fact1, xax=xax, yax=yax)
 					} else {
-						if (as.logical(tclObj(colorvar))) s.chull(ordiClust.dudi$li, fact1, xax=xax, yax=yax, col=rainbow(nlevels(fact1)))
-							else s.chull(ordiClust.dudi$li, fact1, xax=xax, yax=yax)
+						if (as.logical(tclObj(colorvar))) s.chull(ordiClust.dudi$li, fact1, optchull=1, xax=xax, yax=yax, col=rainbow(nlevels(fact1)))
+							else s.chull(ordiClust.dudi$li, fact1, optchull=1, xax=xax, yax=yax)
 					}
 			}
 		} else if (ploteig) {
