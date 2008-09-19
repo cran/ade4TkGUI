@@ -348,7 +348,8 @@
 				"))) ) ngr <- sqrt(ncol(", deparse(val), ")) else ngr <- sqrt(ncol(", deparse(val),
 				"))+1;par(mfrow=c(ngr,ngr));for(i in 1:ncol(", deparse(val), ")) s.value(", deparse(xy),
 				",", deparse(val), "[,i], ", deparse(nx), ",", deparse(ny), ", sub=names(", deparse(val),
-				")[i], csub=2, clegend=2, cgrid=2, , method = \"", method, "\");par(mfrow=c(1,1))", sep="")
+				")[i], csub=2, clegend=2, cgrid=2, xlim=c(", deparse(xl1), ",", deparse(xl2),
+				"), ylim=c(", deparse(yl1), ",", deparse(yl1),"), method = \"", method, "\");par(mfrow=c(1,1))", sep="")
 			parse(text=cmd)
 		} else {
 			substitute(s.value(dfxy=xy, z=val, xax = nx, yax = ny, method = method,

@@ -71,7 +71,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 #
 # For all objects in the global environment, check to see if it is a dataframe
@@ -169,7 +169,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 #
 # For all objects in the global environment, check to see if it is a dataframe
@@ -265,7 +265,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 #
 # For all objects in the global environment, check to see if it is a dataframe
@@ -361,7 +361,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 #
 # For all objects in the global environment, check to see if it is a dataframe
@@ -458,7 +458,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 	
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 #
 # For all objects in the global environment, check to see if it is a dist mat
@@ -556,7 +556,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 	
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 #
 # For all objects in the global environment, check to see if it is a neighbouring
@@ -647,7 +647,7 @@
 	tkpack(scr, side="right", fill="y")
 	
 	nbr <- tclvalue(tkcget(dfnr.label, "-text"))
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 #
 # For all objects in the global environment, check to see if it is a vector
@@ -729,7 +729,7 @@
 	tkpack(scr, side="right", fill="y")
 	
 	nbr <- tclvalue(tkcget(dfnr.label, "-text"))
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 	
 #
@@ -803,7 +803,7 @@
 	tkpack(scr, side="right", fill="y")
 	
 	nbr <- tclvalue(tkcget(dfnr.label, "-text"))
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 	
 #
@@ -881,7 +881,7 @@
 	tkpack(scr, side="right", fill="y")
 	
 	nbc <- tclvalue(tkcget(dfnc.label, "-text"))
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 	
 #
@@ -1232,7 +1232,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 #
 # For all objects in the global environment, check to see if it is a dudi
@@ -1299,7 +1299,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 #
 # For all objects in the global environment, check to see if it is a dudi
@@ -1376,7 +1376,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 #
 # For all objects in the global environment, check to see if it is a dudi
@@ -1491,7 +1491,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 #
 # cmdlist contains the list of graphs that were drawn by the user.
 #
@@ -1560,7 +1560,7 @@
 	tkpack(scr, side="right", fill="y")
 	
 	nbr <- tclvalue(tkcget(dfnr.label, "-text"))
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())	
 	
 #
@@ -1649,7 +1649,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 	
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 	dudiname <- ""
 	dudi <- tclvalue(tkcget(dudi.entry, "-text"))
@@ -1738,7 +1738,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 	
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 	nlev <- length(levels(eval(parse(text=tclvalue(facvar)))))
 
@@ -1794,7 +1794,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 	
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 	
 	for (i in 1:length(obj)) {
@@ -1850,7 +1850,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 	
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 	
 	for (i in 1:length(obj)) {
@@ -2043,7 +2043,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 #
 # dev.list contains the list of graphic windows.
 #
@@ -2113,7 +2113,7 @@
 	tkpack(tlb, side="left", fill="both", expand=TRUE)
 	tkpack(scr, side="right", fill="y")
 
-	rm("last.warning", envir=globalenv())
+#	 rm("last.warning", envir=globalenv())
 	obj <- ls(globalenv())
 #
 # For all objects in the global environment, check to see if it is a dataframe
