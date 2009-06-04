@@ -1,6 +1,6 @@
 Package: ade4TkGUI
-Version: 0.2-4
-Date: 2008/09/19
+Version: 0.2-5
+Date: 2009/06/04
 Title: ade4 Tcl/Tk Graphical User Interface
 Author: Jean Thioulouse <jthioulouse@biomserv.univ-lyon1.fr>, Stephane
         Dray <dray@biomserv.univ-lyon1.fr>
@@ -13,6 +13,6 @@ URL: http://pbil.univ-lyon1.fr/ade4TkGUI, Mailing list:
         http://listes.univ-lyon1.fr/wws/info/adelist
 Repository: CRAN
 Repository/R-Forge/Project: ade4tkgui
-Repository/R-Forge/Revision: 11
-Date/Publication: 2009-05-04 10:17:51
-Packaged: 2009-05-01 03:05:13 UTC; rforge
+Repository/R-Forge/Revision: 13
+Date/Publication: 2012-10-29 08:58:10
+Packaged: 2012-10-29 08:58:10 UTC; ripley
