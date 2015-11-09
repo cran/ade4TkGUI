@@ -1,19 +1,19 @@
 Package: ade4TkGUI
-Version: 0.2-6
-Date: 2012/11/07
-Title: ade4 Tcl/Tk Graphical User Interface
-Author: Jean Thioulouse <jthioulouse@biomserv.univ-lyon1.fr>, Stephane
-        Dray <dray@biomserv.univ-lyon1.fr>
-Maintainer: Jean Thioulouse <jthioulouse@biomserv.univ-lyon1.fr>
-Depends: ade4 (>= 1.4-3), tcltk
-Suggests: tkrplot, pixmap
-Description: a Tcl/Tk GUI for some basic functions in the ade4 package
+Version: 0.2-9
+Date: 2015-11-09
+Title: 'ade4' Tcl/Tk Graphical User Interface
+Author: Jean Thioulouse <jean.thioulouse@univ-lyon1.fr>, Stéphane Dray <stephane.dray@univ-lyon1.fr>, Aurélie Siberchicot <aurelie.siberchicot@univ-lyon1.fr>
+Maintainer: Aurélie Siberchicot <aurelie.siberchicot@univ-lyon1.fr>
+Depends: ade4 (>= 1.4-3), adegraphics
+Imports: graphics, grDevices, lattice, stats, tcltk, tkrplot, utils
+Suggests: pixmap
+Description: A Tcl/Tk GUI for some basic functions in the 'ade4' package.
 License: GPL (>= 2)
 URL: http://pbil.univ-lyon1.fr/ade4TkGUI, Mailing list:
         http://listes.univ-lyon1.fr/wws/info/adelist
+Encoding: UTF-8
+BugReports: https://github.com/aursiber/ade4TkGUI/issues
+NeedsCompilation: no
+Packaged: 2015-11-09 14:59:44 UTC; aurelie
 Repository: CRAN
-Repository/R-Forge/Project: ade4tkgui
-Repository/R-Forge/Revision: 17
-Repository/R-Forge/DateTimeStamp: 2012-11-07 16:04:55
-Date/Publication: 2012-11-13 06:57:22
-Packaged: 2012-11-07 19:23:08 UTC; rforge
+Date/Publication: 2015-11-09 17:15:59

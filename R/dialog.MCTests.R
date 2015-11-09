@@ -3,8 +3,6 @@
 ################################
 "dialog.MCTests" <- function(show, history)
 {
-	op=options()
-	options(warn=-1)
 #
 # Main dialog window with title
 #
@@ -127,12 +125,11 @@
 	#
 	# Execute the command
 	#
-#		ade4TkGUIFlag <<- 1
-		assign("ade4TkGUIFlag", 1, envir=.GlobalEnv)
+		assign("ade4TkGUIFlag", 1, envir=env_ade4tkgui)
 		myObject <- eval.parent(cmd)
-		assign(eval(randtestname), myObject, pos=1)
+		assign(eval(randtestname), myObject, envir=env_ade4tkgui)
 		plot(myObject)
-		rm("ade4TkGUIFlag", envir=.GlobalEnv)
+		rm("ade4TkGUIFlag", envir=env_ade4tkgui)
 		if (history) {
 			commande = paste("plot(", eval(randtestname), " <- ", deparse(cmd, width.cutoff = 500), ")", sep = "")
 			rewriteHistory(commande)
