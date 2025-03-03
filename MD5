@@ -1,7 +1,7 @@
-c7e62b30938b8d1a1fe86e92e6ef1dd0 *DESCRIPTION
-dfd1608b53d11a1379b89cd51dcd2f7c *NAMESPACE
+15ef376e660259039626ed98b8ada446 *DESCRIPTION
+2be68206386a214b4ecafa0eaa4a3fe3 *NAMESPACE
 d7c3fb56816361c38768697f5a6fb3f1 *R/ade4TkGUI.R
-82bb2c81e7a1dddd9a07315e52ab3c34 *R/choose.R
+72aa410056b8df73cf9fb7b318271dcd *R/choose.R
 5cae3e9e76f73ed53caf5f14da7984e3 *R/dialog.MCTests.R
 79965526f449c4f64332c42c8347da49 *R/dialog.between.R
 4b0ddf4542654f105c7698ee904d6b03 *R/dialog.cca.R
@@ -28,8 +28,8 @@ b860038ca53151ca1c4cefca53f2926b *R/dialog.s.label.R
 455897b55c47a864a4b29660c3367c08 *R/dialog.s.match.R
 395d5d40962088342abd41363a3c0c29 *R/dialog.s.value.R
 53bb6ecb076ca97211c22605054059e5 *R/dialog.within.R
-c425d321a68199e747a7419d8b240ade *R/ordiClust.R
-b9c157d0dc5a86cb22b0c8e6b9cdd59f *inst/CITATION
+d560628709bb8f67807dde7ba744ddb5 *R/ordiClust.R
+bec14c01493c30f632bc1eb52bfe7951 *inst/CITATION
 7ce090055b9a2e3663f5acd5ec48e866 *inst/Rlogo.gif
 f92ceccd6b9303bb9f1ad3266e8ac064 *inst/tcltk.gif
 d7bc487b6827b5aad18047ef73121bba *man/ade4TkGUI-internal.Rd
