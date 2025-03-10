@@ -1,5 +1,5 @@
 Package: ade4TkGUI
-Version: 0.3.3
+Version: 0.3.4
 Title: 'ade4' Tcl/Tk Graphical User Interface
 Authors@R: c(
    person("Jean", "Thioulouse", role = "aut", email = "jean.thioulouse@univ-lyon1.fr", 
@@ -19,11 +19,11 @@ URL: https://github.com/adeverse/ade4TkGUI,
 BugReports: https://github.com/adeverse/ade4TkGUI/issues
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2025-03-03 14:15:42 UTC; siberchicot
+Packaged: 2025-03-10 08:35:41 UTC; siberchicot
 Author: Jean Thioulouse [aut] (<https://orcid.org/0000-0001-7664-0598>),
   Stéphane Dray [aut] (<https://orcid.org/0000-0003-0153-1105>),
   Aurélie Siberchicot [aut, cre]
     (<https://orcid.org/0000-0002-7638-8318>)
 Maintainer: Aurélie Siberchicot <aurelie.siberchicot@univ-lyon1.fr>
 Repository: CRAN
-Date/Publication: 2025-03-03 14:40:02 UTC
+Date/Publication: 2025-03-10 08:50:14 UTC
